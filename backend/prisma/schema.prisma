@@ -1,0 +1,202 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+/* ==========================
+   ENUMS
+========================== */
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum StockMovementType {
+  IN
+  OUT
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  ORDERED
+  RECEIVED
+  CANCELLED
+}
+
+enum SalesOrderStatus {
+  DRAFT
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+/* ==========================
+   MODELS
+========================== */
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      UserRole
+  isActive  Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+
+  products  Product[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  sku           String   @unique
+  name          String
+  description   String?
+  unit          String
+  costPrice     Decimal
+  sellingPrice Decimal
+  reorderLevel  Int
+  isActive      Boolean  @default(true)
+
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  stockMovements StockMovement[]
+  purchaseItems  PurchaseOrderItem[]
+  salesItems     SalesOrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Supplier {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  contactPerson String?
+  phone         String
+  email         String
+  address       String
+  isActive      Boolean  @default(true)
+
+  purchaseOrders PurchaseOrder[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Customer {
+  id      String @id @default(uuid())
+  name    String
+  phone   String
+  email   String?
+  address String?
+  isActive  Boolean  @default(true)
+
+  salesOrders SalesOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PurchaseOrder {
+  id        String              @id @default(uuid())
+  poNumber  String              @unique
+  status    PurchaseOrderStatus @default(DRAFT)
+  orderDate DateTime            @default(now())
+  totalCost Decimal
+
+  supplierId String
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+
+  items PurchaseOrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PurchaseOrderItem {
+  id              String @id @default(uuid())
+  quantity        Int
+  costPrice       Decimal
+
+  purchaseOrderId String
+  productId       String
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  product       Product       @relation(fields: [productId], references: [id])
+}
+
+model SalesOrder {
+  id          String            @id @default(uuid())
+  soNumber    String            @unique
+  status      SalesOrderStatus  @default(DRAFT)
+  orderDate   DateTime          @default(now())
+  totalAmount Decimal
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  items SalesOrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+}
+
+model SalesOrderItem {
+  id           String @id @default(uuid())
+  quantity     Int
+  sellingPrice Decimal
+
+  salesOrderId String
+  productId    String
+
+  salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id])
+  product    Product    @relation(fields: [productId], references: [id])
+}
+
+model StockMovement {
+  id        String            @id @default(uuid())
+  type      StockMovementType
+  quantity  Int
+  note      String?
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  userEmail   String
+  role        String
+
+  action      String   // CREATE, UPDATE, DELETE, CONFIRM, RECEIVE, LOGIN
+  entity      String   // PRODUCT, SALES_ORDER, PURCHASE_ORDER, CUSTOMER
+  entityId    String?
+
+  description String?
+
+  ipAddress   String?
+  userAgent   String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([userId])
+}
