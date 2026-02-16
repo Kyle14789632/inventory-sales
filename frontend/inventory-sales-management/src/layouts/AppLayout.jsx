@@ -11,6 +11,7 @@ import {
   IconUsers,
   IconReportMoney,
   IconFileIsr,
+  IconUserCog,
 } from "@tabler/icons-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -45,8 +46,8 @@ export default function AppLayout() {
         />
         {auth?.user?.role === "ADMIN" && (
           <NavLink
-            label="User Management"
-            leftSection={<IconUsers size={18} />}
+            label="Users"
+            leftSection={<IconUserCog size={18} />}
             onClick={() => navigate("/users")}
           />
         )}
