@@ -22,17 +22,41 @@ export async function createUser(data) {
   });
 }
 
-export async function getUsers() {
-  return prisma.user.findMany({
-    select: {
-      id: true,
-      email: true,
-      role: true,
-      isActive: true,
-      createdAt: true,
+export async function getUsers({
+  page,
+  limit,
+  sortBy = "email",
+  sortOrder = "asc",
+}) {
+  const skip = (page - 1) * limit;
+
+  const [data, total] = await prisma.$transaction([
+    prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+    }),
+    prisma.user.count(),
+  ]);
+
+  return {
+    data,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
     },
-    orderBy: { createdAt: "desc" },
-  });
+  };
 }
 
 export async function toggleUserStatus(id, isActive) {
