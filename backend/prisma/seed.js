@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import prisma from "../src/prisma/client.js";
 
 async function seedAdmin() {
-  const adminEmail = "admin@erp.local";
+  const adminEmail = "admin@gmail.com";
 
   const existingAdmin = await prisma.user.findUnique({
     where: { email: adminEmail },

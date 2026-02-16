@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { TextInput, PasswordInput, Button, Stack } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Container,
+  Paper,
+  PasswordInput,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { login as loginApi } from "../services/auth.service";
-import AuthLayout from "../layouts/AuthLayout";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import logo from "../assets/logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -37,28 +45,40 @@ export default function Login() {
   };
 
   return (
-    <AuthLayout>
-      <form onSubmit={handleSubmit}>
-        <Stack>
-          <TextInput
-            label="Email"
-            required
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
+    <Center mih="100vh" px="md" py={{ base: "xl", md: 96 }}>
+      <Container size={512} w="100%">
+        <Paper withBorder shadow="md" p={{ base: "xl", md: 48 }} radius="md">
+          <Stack gap="xl">
+            <Stack align="center" gap="sm">
+              <img src={logo} alt="App logo" width={350} />
+            </Stack>
 
-          <PasswordInput
-            label="Password"
-            required
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
+            <form onSubmit={handleSubmit}>
+              <Stack gap="lg">
+                <TextInput
+                  label="Email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
 
-          <Button type="submit" loading={loading} fullWidth>
-            Sign in
-          </Button>
-        </Stack>
-      </form>
-    </AuthLayout>
+                <PasswordInput
+                  label="Password"
+                  required
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
+                />
+
+                <Button type="submit" loading={loading} fullWidth>
+                  Sign in
+                </Button>
+              </Stack>
+            </form>
+          </Stack>
+        </Paper>
+      </Container>
+    </Center>
   );
 }
