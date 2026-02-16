@@ -15,6 +15,7 @@ import CreateSalesOrder from "../pages/sales-orders/CreateSalesOrder";
 import EditSalesOrder from "../pages/sales-orders/EditSalesOrder";
 import Dashboard from "../pages/Dashboard";
 import AuditLogs from "../pages/AuditLogs";
+import Users from "../pages/Users";
 
 export default function Router() {
   return (
@@ -28,6 +29,7 @@ export default function Router() {
           <Route element={<AppLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="customers" element={<Customers />} />
+            <Route path="users" element={<Users />} />
             <Route path="suppliers" element={<Suppliers />} />
             <Route path="categories" element={<Categories />} />
             <Route path="products" element={<Products />} />

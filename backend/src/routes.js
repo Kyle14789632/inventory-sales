@@ -9,6 +9,7 @@ import salesOrderRoutes from "./modules/sales-orders/salesOrder.routes.js";
 import customerRoutes from "./modules/customers/customer.routes.js";
 import reportRoutes from "./modules/reports/report.routes.js";
 import auditLogRoutes from "./modules/auditLogs/auditLog.routes.js";
+import userRoutes from "./modules/users/user.routes.js";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/sales-orders", salesOrderRoutes);
 router.use("/customers", customerRoutes);
 router.use("/reports", reportRoutes);
 router.use("/audit-logs", auditLogRoutes);
+router.use("/users", userRoutes);
 
 export default router;
