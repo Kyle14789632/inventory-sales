@@ -43,6 +43,13 @@ export default function AppLayout() {
           leftSection={<IconLayoutDashboard size={18} />}
           onClick={() => navigate("/")}
         />
+        {auth?.user?.role === "ADMIN" && (
+          <NavLink
+            label="User Management"
+            leftSection={<IconUsers size={18} />}
+            onClick={() => navigate("/users")}
+          />
+        )}
 
         <NavLink
           label="Customers"
