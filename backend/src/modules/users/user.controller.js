@@ -18,8 +18,17 @@ export async function createUserController(req, res) {
 }
 
 export async function getUsersController(req, res) {
-  const users = await getUsers();
-  res.json(users);
+  const parsedPage = Number.parseInt(req.query.page, 10);
+  const parsedLimit = Number.parseInt(req.query.limit, 10);
+
+  const page = Number.isNaN(parsedPage) || parsedPage < 1 ? 1 : parsedPage;
+  const limit = Number.isNaN(parsedLimit) || parsedLimit < 1 ? 10 : parsedLimit;
+
+  const sortBy = "email";
+  const sortOrder = req.query.sortOrder === "desc" ? "desc" : "asc";
+
+  const result = await getUsers({ page, limit, sortBy, sortOrder });
+  res.json(result);
 }
 
 export async function toggleUserStatusController(req, res) {
