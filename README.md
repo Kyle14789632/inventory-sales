@@ -1,4 +1,4 @@
-# Inventory and Sales Management - Project Analysis
+# Inventory and Sales Management
 
 ## Overview
 
