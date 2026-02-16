@@ -1,6 +1,7 @@
 # Inventory and Sales Management - Project Analysis
 
 ## Overview
+
 This repository contains a full-stack Inventory and Sales Management system:
 
 - Backend: Node.js + Express + Prisma + PostgreSQL
@@ -17,6 +18,7 @@ The app supports core business flows for products, inventory, suppliers, custome
 ## Tech Stack
 
 ### Backend
+
 - Express `5.x`
 - Prisma ORM `6.x`
 - PostgreSQL datasource
@@ -24,6 +26,7 @@ The app supports core business flows for products, inventory, suppliers, custome
 - JWT (`jsonwebtoken`) + bcrypt
 
 ### Frontend
+
 - React `19`
 - Vite `7`
 - Mantine `8`
@@ -32,6 +35,7 @@ The app supports core business flows for products, inventory, suppliers, custome
 - Axios
 
 ## Core Domain Model (Prisma)
+
 Main models:
 
 - `User` (role, active/inactive)
@@ -47,6 +51,7 @@ Main models:
 Business status enums are implemented for purchase and sales order lifecycles.
 
 ## API Surface (high-level)
+
 All routes are mounted under `/api`.
 
 - `POST /api/auth/login`
@@ -59,6 +64,7 @@ All routes are mounted under `/api`.
 - `GET /api/audit-logs` (admin-only)
 
 ## Frontend Coverage
+
 The UI includes pages for:
 
 - Login
@@ -85,12 +91,14 @@ Routing is protected via `ProtectedRoute`, and bearer tokens are attached throug
 ## Environment Variables
 
 ### Backend (`backend/.env`)
+
 - `DATABASE_URL=postgresql://...`
 - `JWT_SECRET=your-secret`
 - `JWT_EXPIRES_IN=1d`
 - `PORT=4000` (optional)
 
 ### Frontend (`frontend/inventory-sales-management/.env`)
+
 - `VITE_API_URL=http://localhost:4000/api`
 
 ## Local Setup
@@ -103,6 +111,7 @@ cd ../frontend/inventory-sales-management && npm install
 ```
 
 ### 2) Configure environment files
+
 Create `.env` files in backend and frontend using the variables above.
 
 ### 3) Initialize database
@@ -114,18 +123,21 @@ npx prisma db seed
 ```
 
 Seed creates default admin:
+
 - Email: `admin@gmail.com`
 - Password: `admin123`
 
 ### 4) Run the apps
 
 Backend:
+
 ```bash
 cd backend
 npm run dev
 ```
 
 Frontend:
+
 ```bash
 cd frontend/inventory-sales-management
 npm run dev
